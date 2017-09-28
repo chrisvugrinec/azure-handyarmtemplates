@@ -1,0 +1,41 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "backEndNSGName": {
+      "type": "string"
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('backEndNSGName')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "NSG - Web Access"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "kube_dashboard",
+            "properties": {
+              "description": "Allow Kube Dashboard",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "30098",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 2001,
+              "direction": "Inbound"
+            }
+          }
+
+        ]
+      }
+    }
+  ]
+  }
